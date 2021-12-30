@@ -193,6 +193,16 @@ function AuthRouter() {
                 });
         });
 
+    router.route('/users/:userId')
+        .put(async function (req, res, next) {
+            let userId = req.params.userId;
+            let body = req.body;
+            const user = await Users.update(userId)
+            user.reserve.push(body)
+            Users.save(user)
+            res.send(user)
+        });
+
     return router;
 }
 

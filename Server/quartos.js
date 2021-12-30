@@ -60,20 +60,24 @@ function QuartosRouter() {
                     next();
                 });
         })
-        .put(cheackAuth, function (req, res, next) {
+        .put(async function (req, res, next) {
             let quartoId = req.params.quartoId;
             let body = req.body;
+            const quarto = await Quartos.findById(quartoId)
+            quarto.reserve.push(body)
+            Quartos.save(quarto)
+            res.send(quarto)
 
-            Quartos.update(quartoId, body)
-                .then((quarto) => {
-                    res.status(200);
-                    res.send(quarto);
-                    next();
-                })
-                .catch((err) => {
-                    res.status(404);
-                    next();
-                });
+            // Quartos.update(quartoId, body)
+            //     .then((quarto) => {
+            //         res.status(200);
+            //         res.send(quarto);
+            //         next();
+            //     })
+            //     .catch((err) => {
+            //         res.status(404);
+            //         next();
+            //     });
         })
 
         .delete(cheackAuth, function (req, res, next) {

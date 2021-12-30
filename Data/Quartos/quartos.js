@@ -10,7 +10,10 @@ let QuartoSchema = new Schema({
    valueNight: { type: Number, required: true },
    image: { type: String, required: true, unique: true },
    service: { type: String, required: true },
-   reserve: { type: [] },
+   reserve: [{
+      checkIn: { type: String, unique: true },
+      checkOut: { type: String, unique: true },
+   }],
 });
 
 let Quarto = mongoose.model('Quartos', QuartoSchema);
