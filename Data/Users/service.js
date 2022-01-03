@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const config = require('../../config');
+const { saltRounds } = require('../../config');
 
 
 function UserService(UserModel) {
@@ -96,10 +97,11 @@ function UserService(UserModel) {
     }
 
     function update(id, values) {
-        return new Promise(function (resolve, reject) {
+        return new Promise(async function (resolve, reject) {
+            values.password = await bcrypt.hash(values.password, config.saltRounds)
             UserModel.findByIdAndUpdate(id, values, { new: true }, function (err, user) {
-                if (err) reject(err);
 
+                if (err) reject(err);
                 resolve(user);
             });
         });

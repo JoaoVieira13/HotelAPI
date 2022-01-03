@@ -85,17 +85,6 @@ function QuartosRouter() {
             quarto.reserve.push(body)
             Quartos.save(quarto)
             res.send(quarto)
-
-            // Quartos.update(quartoId, body)
-            //     .then((quarto) => {
-            //         res.status(200);
-            //         res.send(quarto);
-            //         next();
-            //     })
-            //     .catch((err) => {
-            //         res.status(404);
-            //         next();
-            //     });
         })
 
         .delete(function (req, res, next) {
