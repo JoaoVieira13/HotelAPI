@@ -45,6 +45,24 @@ function QuartosRouter() {
                 });
         });
 
+    router.route('/change/:quartoId')
+        .put(function (req, res, next) {
+            let quartoId = req.params.quartoId;
+            let body = req.body;
+
+            Quartos.update(quartoId, body)
+                .then((quarto) => {
+                    res.status(200);
+                    res.send(quarto);
+                    next();
+                })
+                .catch((err) => {
+                    res.status(404);
+                    next();
+                });
+        })
+
+
     router.route('/quarto/:quartoId')
         .get(function (req, res, next) {
             let quartoId = req.params.quartoId;
@@ -80,7 +98,7 @@ function QuartosRouter() {
             //     });
         })
 
-        .delete(cheackAuth, function (req, res, next) {
+        .delete(function (req, res, next) {
             console.log('Bedroom deleted');
             let quartoId = req.params.quartoId;
             Quartos.removeById(quartoId)

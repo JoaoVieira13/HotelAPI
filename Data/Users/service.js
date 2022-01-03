@@ -5,7 +5,7 @@ const config = require('../../config');
 
 function UserService(UserModel) {
 
-    const ITEMS_PER_PAGE = 2;
+    const ITEMS_PER_PAGE = 8;
 
     let service = {
         create,

@@ -41,9 +41,8 @@ function AuthRouter() {
                         token: crypto.randomBytes(32).toString("hex")
                     }).save()
                 }
-
                 const link = `http://localhost:3000/auth/passwordReset/${user._id}/${token.token}`
-                await sendEmail(user.email, "Password reset", link)
+                await sendEmail(user.email, "Password Reset Link", link, '../utils/requestResetPassword.html')
                 res.send(" Password reset link sent to your email account!")
             } catch (error) {
                 res.send("An error occured.")
@@ -163,7 +162,7 @@ function AuthRouter() {
         })
 
     router.route('/login/:userId')
-        .delete(cheackAuth, function (req, res, next) {
+        .delete(function (req, res, next) {
             let userId = req.params.userId;
             Users.removeById(userId)
                 .then(() => {

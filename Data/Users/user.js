@@ -5,6 +5,7 @@ let UserSchema = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     userType: { default: "DEFAULT", type: ["ADMIN", "DEFAULT"] },
+    avatar: { type: String },
     reserve: [{
         checkIn: { type: String, unique: true },
         checkOut: { type: String, unique: true },
