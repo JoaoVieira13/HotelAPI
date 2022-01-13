@@ -41,7 +41,7 @@ function AuthRouter() {
                         token: crypto.randomBytes(32).toString("hex")
                     }).save()
                 }
-                const link = `http://localhost:3000/auth/passwordReset/${user._id}/${token.token}`
+                const link = `http://localhost:3000/passwordReset/${user._id}/${token.token}`
                 await sendEmail(user.email, "Password Reset Link", link, '../utils/requestResetPassword.html')
                 res.send(" Password reset link sent to your email account!")
             } catch (error) {
@@ -201,6 +201,48 @@ function AuthRouter() {
             Users.save(user)
             res.send(user)
         });
+
+    router.route('/favorites')
+        .delete(async function (req, res, next) {
+            let id = req.headers.userid;
+            let quartoId = req.headers.quartoid;
+
+            Users.removeFavorites(id, quartoId)
+                .then((user) => {
+                    res.status(200);
+                    res.send(user);
+                    next();
+                })
+        })
+
+        .post(async function (req, res, next) {
+            let id = req.body.userId;
+            let quartoId = req.body.quartoId;
+            Users.addFavorites(id, quartoId)
+                .then((user) => {
+                    res.status(200);
+                    res.send(user);
+                    next();
+                });
+        })
+
+        .get(async function (req, res, next) {
+            let token = req.headers['x-access-token'];
+
+            if (!token) {
+                return res
+                    .status(401)
+                    .send({ auth: false, message: "No token provided" });
+            }
+
+            return Users.verifyToken(token)
+                .then((decoded) => {
+                    Users.getFavorites(decoded.id)
+                        .then((user) => {
+                            res.send(user);
+                        });
+                })
+        })
 
     return router;
 }

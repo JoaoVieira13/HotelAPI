@@ -19,6 +19,9 @@ function UserService(UserModel) {
         comparePassword,
         update,
         removeById,
+        addFavorites,
+        removeFavorites,
+        getFavorites,
     };
 
     function create(user) {
@@ -139,6 +142,41 @@ function UserService(UserModel) {
     function comparePassword(password, hash) {
         return bcrypt.compare(password, hash);
     }
+
+    function addFavorites(id, quartoId) {
+        return new Promise(function (resolve, reject) {
+            UserModel.findByIdAndUpdate(
+                id,
+                { $addToSet: { favorites: quartoId } },
+                function (err, user) {
+                    if (err) reject(err);
+                    resolve(user);
+                }
+            );
+        });
+    }
+
+    function removeFavorites(id, quartoId) {
+        return new Promise(function (resolve, reject) {
+            UserModel.findByIdAndUpdate(
+                id,
+                { $pull: { favorites: quartoId } },
+                function (err, user) {
+                    if (err) reject(err);
+                    resolve();
+                }
+            );
+        });
+    }
+    function getFavorites(id) {
+        return new Promise(function (resolve, reject) {
+            UserModel.findById(id, "favorites", function (err, user) {
+                if (err) reject(err);
+                resolve(user);
+            }).populate("favorites");
+        });
+    }
 }
+
 
 module.exports = UserService;

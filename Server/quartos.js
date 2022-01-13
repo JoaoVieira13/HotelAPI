@@ -27,7 +27,7 @@ function QuartosRouter() {
                     next();
                 });
         })
-        .post(cheackAuth, function (req, res, next) {
+        .post(function (req, res, next) {
 
             let body = req.body;
             Quartos.create(body)
@@ -38,7 +38,7 @@ function QuartosRouter() {
                     next();
                 })
                 .catch((err) => {
-                    console.log('Error creating a new bedroom!');
+                    console.log(err);
                     err.status = err.status || 500;
                     res.status(401);
                     next();

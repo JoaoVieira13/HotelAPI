@@ -18,4 +18,7 @@ let QuartoSchema = new Schema({
 
 let Quarto = mongoose.model('Quartos', QuartoSchema);
 
-module.exports = Quarto;
+module.exports = {
+   Quarto,
+   QuartoSchema,
+}
